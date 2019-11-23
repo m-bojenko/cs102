@@ -11,12 +11,6 @@ token = '931957752:AAEgcqI9NDRG4uwaZTWcSqzPk5YYG0j4By8'
 apihelper.proxy = {'https': 'https://141.125.82.106:80'}
 bot = telebot.TeleBot(token)
 
-@bot.message_handler(commands=['near'])
-def say_hi(message):
-    resp = '{}: Привет, я Сосисочка Бот \n'
-    resp += '{}: Моей ключевой обязанностью является знать расписание студентов Университета ИТМО \n'
-    resp += '{}: Я умею выполнять несколько команд: \n'
-    return bot.send_message(message.chat.id, resp, parse_mode='HTML')
 
 def get_page(group: str, week: str = '') -> str:
     dom = 'http://www.ifmo.ru/ru/schedule'
