@@ -1,4 +1,5 @@
 from typing import Tuple, List, Set, Optional
+import random
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
@@ -39,7 +40,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    return values[pos[0]]
+    return grid[pos[0]]
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -51,7 +52,7 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    return [i[pos[1]] for i in values]
+    return [i[pos[1]] for i in grid]
 
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -64,7 +65,8 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    grid = [values[x][y] for x in range((pos[0] // 3) * 3, (pos[0] // 3) * 3 + 3) for y in range((pos[1] // 3) * 3, (pos[1] // 3) * 3 + 3)]
+    grid = [grid[x][y] for x in range((pos[0] // 3) * 3, (pos[0] // 3) * 3 + 3)
+            for y in range((pos[1] // 3) * 3, (pos[1] // 3) * 3 + 3)]
     return grid
 
 
@@ -94,7 +96,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    return set('123456789') - set(get_row(grid,pos)) - set(get_block(grid, pos)) - set(get_col(grid, pos))
+    return set('123456789') - set(get_row(grid, pos)) - set(get_block(grid, pos)) - set(get_col(grid, pos))
 
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
@@ -126,26 +128,26 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
 def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    isRight = True
+    is_right = True
     for x in range(9):
         for y in range(9):
             pos = (x, y)
             amount = 0
             for i in get_row(solution, pos):
                 amount += int(i)
-            if not amount == 45:
-                isRight = False
+            if amount != 45:
+                is_right = False
             amount = 0
             for i in get_col(solution, pos):
                 amount += int(i)
-            if not amount == 45:
-                isRight = False
+            if amount != 45:
+                is_right = False
             amount = 0
             for i in get_block(solution, pos):
                 amount += int(i)
-            if not amount == 45:
-                isRight = False
-    return isRight
+            if amount != 45:
+                is_right = False
+    return is_right
 
 
 def generate_sudoku(N: int) -> List[List[str]]:
@@ -170,16 +172,16 @@ def generate_sudoku(N: int) -> List[List[str]]:
     True
     """
     grid = [['.'] * 9 for i in range(9)]
-    for x in range(1,9):
-        grid[(x % 3)*3 + random.randint(0,2)][(x // 3)*3 + random.randint(0,2)] = str(x)
+    for x in range(1, 9):
+        grid[(x % 3) * 3 + random.randint(0, 2)][(x // 3) * 3 + random.randint(0, 2)] = str(x)
     grid = solve(grid)
     x = 0
-    while x < 81-N:
-        i = random.randint(0,8)
-        j = random.randint(0,8)
+    while x < 81 - N:
+        i = random.randint(0, 8)
+        j = random.randint(0, 8)
         if grid[i][j] != '.':
             grid[i][j] = '.'
-            x+=1
+            x += 1
     return grid
 
 
@@ -192,3 +194,4 @@ if __name__ == '__main__':
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+
