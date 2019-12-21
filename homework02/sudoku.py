@@ -122,7 +122,7 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
                 return grid
             else:
                 grid[pos[0]][pos[1]] = '.'
-    return False
+    return None
 
 
 def check_solution(solution: List[List[str]]) -> bool:
@@ -132,8 +132,9 @@ def check_solution(solution: List[List[str]]) -> bool:
     for x in range(9):
         for y in range(9):
             pos = (x, y)
+            '''
             amount = 0
-            for i in get_row(solution, pos):
+            for i in : get_row(solution, pos)
                 amount += int(i)
             if amount != 45:
                 is_right = False
@@ -147,6 +148,17 @@ def check_solution(solution: List[List[str]]) -> bool:
                 amount += int(i)
             if amount != 45:
                 is_right = False
+            '''
+            b1 = set(get_row(solution, pos))
+            if len(b1) != 9:
+                is_right = False
+            b2 = set(get_col(solution, pos))
+            if len(b2) != 9:
+                is_right = False
+            b3 = set(get_block(solution, pos))
+            if len(b3) != 9:
+                is_right = False
+
     return is_right
 
 
@@ -174,7 +186,8 @@ def generate_sudoku(N: int) -> List[List[str]]:
     grid = [['.'] * 9 for i in range(9)]
     for x in range(1, 9):
         grid[(x % 3) * 3 + random.randint(0, 2)][(x // 3) * 3 + random.randint(0, 2)] = str(x)
-    grid = solve(grid)
+    if solve(grid):
+        grid = solve(grid)
     x = 0
     while x < 81 - N:
         i = random.randint(0, 8)
@@ -194,4 +207,3 @@ if __name__ == '__main__':
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
-
