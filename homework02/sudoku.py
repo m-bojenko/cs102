@@ -129,6 +129,7 @@ def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
     is_right = True
+    set0 = {1, 2, 3, 4, 5, 6, 7, 8, 9}
     for x in range(9):
         for y in range(9):
             pos = (x, y)
@@ -150,13 +151,13 @@ def check_solution(solution: List[List[str]]) -> bool:
                 is_right = False
             '''
             b1 = set(get_row(solution, pos))
-            if len(b1) != 9:
+            if b1 == set0:
                 is_right = False
             b2 = set(get_col(solution, pos))
-            if len(b2) != 9:
+            if b2 == set0:
                 is_right = False
             b3 = set(get_block(solution, pos))
-            if len(b3) != 9:
+            if b3 == set0:
                 is_right = False
 
     return is_right
@@ -186,8 +187,7 @@ def generate_sudoku(N: int) -> List[List[str]]:
     grid = [['.'] * 9 for i in range(9)]
     for x in range(1, 9):
         grid[(x % 3) * 3 + random.randint(0, 2)][(x // 3) * 3 + random.randint(0, 2)] = str(x)
-    if solve(grid):
-        grid = solve(grid)
+    grid = solve(grid)
     x = 0
     while x < 81 - N:
         i = random.randint(0, 8)
