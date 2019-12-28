@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from typing import List, Tuple
 
 token = '931957752:AAEgcqI9NDRG4uwaZTWcSqzPk5YYG0j4By8'
-apihelper.proxy = {'https': 'https://141.125.82.106:80'}
+apihelper.proxy = {'https': 'https://167.172.56.231:8080'}
 bot = telebot.TeleBot(token)
 
 
