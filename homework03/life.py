@@ -2,8 +2,6 @@ from typing import List, Tuple
 
 from random import randint
 
-import mas
-
 import pygame
 from pygame.locals import *
 
@@ -45,7 +43,7 @@ class GameOfLife:
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
-        listik = mas.bad_mas  # self.create_grid(randomize=True)
+        listik = self.create_grid(randomize=True)
         running = True
         while running:
             for event in pygame.event.get():
@@ -175,3 +173,4 @@ class GameOfLife:
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 20)
     game.run()
+
