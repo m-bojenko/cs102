@@ -14,6 +14,14 @@ def read_map(filename: str) -> List[List[str]]:
     return grid
 
 
+def print_map(grid: List[List[str]]):
+    """ Чертим нашу карту """
+    for row in range(len(grid)):
+        for col in range(len(grid[row])):
+            print(grid[row][col], end='')
+        print()
+
+
 def get_coord(grid: List[List[str]]) -> Tuple[int, int]:
     """ Получить координаты замков """
     cas = []
@@ -21,7 +29,10 @@ def get_coord(grid: List[List[str]]) -> Tuple[int, int]:
         for j in range(len(grid[i])):
             if grid[i][j] == 'c':
                 cas.append((i, j))
-    print('Castles are in ', cas)
+
+    for i in range(len(cas)):
+        print('Castles number ', i, ' is in ', cas[i])
+
     decision = int(input('Which castle would you like to reach (write the number): '))
     decision = cas[decision]
     return decision
@@ -47,7 +58,7 @@ def make_graph(grid: List[List[str]]):
 
 
 def make_try(grid: List[List[str]], hum_coord: Tuple[int, int], coord: Tuple[int, int], min=0, lives=5) -> int:
-    """ Рекурсивно пробуем найти решения через всех соседей """
+    """ Рекурсивно пробуем найти решения через всех соседей - вовращаем значение минимального пути"""
     if hum_coord == coord:
         return min
     local_min = float("inf")
@@ -55,8 +66,8 @@ def make_try(grid: List[List[str]], hum_coord: Tuple[int, int], coord: Tuple[int
     done = 0  # проверка "замкнутости"
     for i in range(len(walks)):
         try:
-            x1 = hum_coord[0] + walks[i][0]  # текущие
-            y1 = hum_coord[1] + walks[i][1]  # координаты
+            x1 = hum_coord[0] + walks[i][0]  # координаты
+            y1 = hum_coord[1] + walks[i][1]  # соседа
             if grid[x1][y1] in '.12345':
                 local_grid = grid
                 local_lives = lives
@@ -80,7 +91,7 @@ def make_try(grid: List[List[str]], hum_coord: Tuple[int, int], coord: Tuple[int
 
 
 def find_way(grid: List[List[str]], coord: Tuple[int, int]):
-    """ Решает задачу """
+    """ Решает задачу - возвращает значение кратчайшего пути"""
     this_grid = grid
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -96,4 +107,5 @@ def find_way(grid: List[List[str]], coord: Tuple[int, int]):
         return make_try(this_grid, hum_coord, coord)
 
 
+print_map(read_map('map1.txt'))
 print(find_way(read_map('map1.txt'), (2, 0)))
